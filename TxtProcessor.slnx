@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TxtProcessor.Api/TxtProcessor.Api.csproj" />
+  <Project Path="TxtProcessor.Worker/TxtProcessor.Worker.csproj" />
+</Solution>
