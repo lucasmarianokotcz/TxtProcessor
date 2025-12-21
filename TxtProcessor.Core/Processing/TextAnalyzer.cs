@@ -4,7 +4,49 @@ namespace TxtProcessor.Core.Processing;
 
 public static class TextAnalyzer
 {
-    public static IReadOnlyList<WordCount> GetTopWords(
+    public static TextAnalysisResult AnalyzeText(
+        string text,
+        int topWordsCount = 5)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        var totalWords = GetTotalWordCount(text);
+        var uniqueWords = GetTotalUniqueWordCount(text);
+        var topWords = GetTopWords(text, topWordsCount);
+
+        return new TextAnalysisResult
+        (
+            TotalWords: totalWords,
+            UniqueWords: uniqueWords,
+            TopWords: topWords
+        );
+    }
+
+    private static int GetTotalWordCount(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return 0;
+        var words = text
+            .Split(
+                [' ', '\r', '\n', '\t', '.', ',', ';', '!', '?'],
+                StringSplitOptions.RemoveEmptyEntries);
+        return words.Length;
+    }
+
+    private static int GetTotalUniqueWordCount(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return 0;
+        var words = text
+            .ToLowerInvariant()
+            .Split(
+                [' ', '\r', '\n', '\t', '.', ',', ';', '!', '?'],
+                StringSplitOptions.RemoveEmptyEntries);
+        var uniqueWords = new HashSet<string>(words);
+        return uniqueWords.Count;
+    }
+
+    private static IReadOnlyList<WordCount> GetTopWords(
         string text,
         int top = 5)
     {

@@ -21,7 +21,7 @@ app.MapControllers();
 
 app.MapPost("/analyze", ([FromBody] TextRequest request) =>
 {
-    var result = TextAnalyzer.GetTopWords(request.Text);
+    var result = TextAnalyzer.AnalyzeText(request.Text);
     return Results.Ok(result);
 });
 
