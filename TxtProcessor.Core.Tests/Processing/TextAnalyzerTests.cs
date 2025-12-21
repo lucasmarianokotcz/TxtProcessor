@@ -16,8 +16,8 @@ public class TextAnalyzerTests
         // Assert
         Assert.Equal(3, result.Count);
 
-        Assert.Equal(("apple", 3), result[0]);
-        Assert.Equal(("banana", 2), result[1]);
-        Assert.Equal(("orange", 1), result[2]);
+        Assert.Equal(new("apple", 3), result[0]);
+        Assert.Equal(new("banana", 2), result[1]);
+        Assert.Equal(new("orange", 1), result[2]);
     }
 }

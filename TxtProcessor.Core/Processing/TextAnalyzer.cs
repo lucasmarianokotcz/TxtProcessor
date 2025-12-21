@@ -1,8 +1,10 @@
-﻿namespace TxtProcessor.Core.Processing;
+﻿using TxtProcessor.Core.Models;
+
+namespace TxtProcessor.Core.Processing;
 
 public static class TextAnalyzer
 {
-    public static IReadOnlyList<(string Word, int Count)> GetTopWords(
+    public static IReadOnlyList<WordCount> GetTopWords(
         string text,
         int top = 5)
     {
@@ -12,14 +14,17 @@ public static class TextAnalyzer
         var words = text
             .ToLowerInvariant()
             .Split(
-                separator: [' ', '\r', '\n', '\t', '.', ',', ';', '!', '?'],
-                options: StringSplitOptions.RemoveEmptyEntries);
+                [' ', '\r', '\n', '\t', '.', ',', ';', '!', '?'],
+                StringSplitOptions.RemoveEmptyEntries);
 
-        return [.. words
+        var topWords = words
             .GroupBy(w => w)
-            .Select(g => (Word: g.Key, Count: g.Count()))
+            .Select(g => new WordCount(g.Key, g.Count()))
             .OrderByDescending(x => x.Count)
             .ThenBy(x => x.Word)
-            .Take(top)];
+            .Take(top)
+            .ToList();
+
+        return topWords;
     }
 }
