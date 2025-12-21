@@ -1,5 +1,9 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
   <Project Path="TxtProcessor.Api/TxtProcessor.Api.csproj" />
+  <Project Path="TxtProcessor.Core.Tests/TxtProcessor.Core.Tests.csproj" />
   <Project Path="TxtProcessor.Core/TxtProcessor.Core.csproj" />
   <Project Path="TxtProcessor.Worker/TxtProcessor.Worker.csproj" />
 </Solution>
