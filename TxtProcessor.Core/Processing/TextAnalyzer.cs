@@ -10,9 +10,9 @@ public static class TextAnalyzer
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        var totalWords = GetTotalWordCount(text);
-        var uniqueWords = GetTotalUniqueWordCount(text);
-        var topWords = GetTopWords(text, topWordsCount);
+        int totalWords = GetTotalWordCount(text);
+        int uniqueWords = GetTotalUniqueWordCount(text);
+        IReadOnlyList<WordCount> topWords = GetTopWords(text, topWordsCount);
 
         return new TextAnalysisResult
         (
@@ -26,7 +26,7 @@ public static class TextAnalyzer
     {
         if (string.IsNullOrWhiteSpace(text))
             return 0;
-        var words = text
+        string[] words = text
             .Split(
                 [' ', '\r', '\n', '\t', '.', ',', ';', '!', '?'],
                 StringSplitOptions.RemoveEmptyEntries);
@@ -37,12 +37,12 @@ public static class TextAnalyzer
     {
         if (string.IsNullOrWhiteSpace(text))
             return 0;
-        var words = text
+        string[] words = text
             .ToLowerInvariant()
             .Split(
                 [' ', '\r', '\n', '\t', '.', ',', ';', '!', '?'],
                 StringSplitOptions.RemoveEmptyEntries);
-        var uniqueWords = new HashSet<string>(words);
+        HashSet<string> uniqueWords = [.. words];
         return uniqueWords.Count;
     }
 
@@ -53,19 +53,18 @@ public static class TextAnalyzer
         if (string.IsNullOrWhiteSpace(text))
             return [];
 
-        var words = text
+        string[] words = text
             .ToLowerInvariant()
             .Split(
                 [' ', '\r', '\n', '\t', '.', ',', ';', '!', '?'],
                 StringSplitOptions.RemoveEmptyEntries);
 
-        var topWords = words
+        List<WordCount> topWords = [.. words
             .GroupBy(w => w)
             .Select(g => new WordCount(g.Key, g.Count()))
             .OrderByDescending(x => x.Count)
             .ThenBy(x => x.Word)
-            .Take(top)
-            .ToList();
+            .Take(top)];
 
         return topWords;
     }
